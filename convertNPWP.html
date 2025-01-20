@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Converter Inputan</title>
+    <style>
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Konversi Format Inputan</h1>
+    <label for="inputArray">Masukkan Inputan Array:</label>
+    <textarea id="inputArray" placeholder="Masukkan data, satu per baris..."></textarea>
+
+    <button id="convertButton">Convert</button>
+
+    <h2>Hasil:</h2>
+    <textarea id="outputArray" readonly></textarea>
+
+    <script>
+        document.getElementById('convertButton').addEventListener('click', function () {
+            const input = document.getElementById('inputArray').value;
+            const lines = input.split('\n').map(line => line.trim());
+            const formattedLines = lines.map(line => {
+                if (line.length === 15) {
+                    return `${line.slice(0, 2)}.${line.slice(2, 5)}.${line.slice(5, 8)}.${line[8]}-${line.slice(9, 12)}.${line.slice(12)}`;
+                }
+                return line; // Jika panjang tidak sesuai, biarkan apa adanya
+            });
+            document.getElementById('outputArray').value = formattedLines.join('\n');
+        });
+    </script>
+</body>
+</html>

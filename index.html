@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Validasi Inputan Bulk Validasi </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .tabs {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            background: #f9f9f9;
+            border: none;
+            outline: none;
+            transition: background 0.3s;
+        }
+
+        .tab-button:hover {
+            background: #eee;
+        }
+
+        .tab-button.active {
+            background: #ddd;
+            font-weight: bold;
+        }
+
+        .tab-contents {
+            padding: 20px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .npwp_textarea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 10px;
+        }
+
+        .label-npwp {
+            margin-bottom: 10px;
+            margin-top: 10px;
+            margin-left: 30px;
+        }
+
+        .value-npwp {
+            margin-bottom: 10px;
+            margin-top: 10px;
+            margin-left: 110px
+        }
+
+        .container_length {
+            /* max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px; */
+        }
+
+
+        .result_length {
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tabs">
+        <div class="tab-buttons">
+            <button class="tab-button active" data-tab="menu1">length Validasi</button>
+            <button class="tab-button" data-tab="menu2">Menu 2</button>
+            <button class="tab-button" data-tab="menu3">Menu 3</button>
+            <button class="tab-button" data-tab="menu4">NPWP Validasi</button>
+        </div>
+        <div class="tab-contents">
+            <div id="menu1" class="tab-content active">
+
+                <h2>Hitung Panjang String per Baris</h2>
+                <textarea class="npwp_textarea" id="inputArray"   placeholder="Masukkan data 012345678912345"></textarea>
+
+                <textarea class="npwp_textarea" id="outputArray" readonly></textarea>
+
+                <script>
+                    const input = document.getElementById('inputArray'); // Perbaikan ID elemen input
+                    const output = document.getElementById('outputArray');
+                
+                    input.addEventListener('input', () => {
+                      const lines = input.value.split('\n'); // Membagi teks berdasarkan baris
+                      let result = ''; // Reset hasil output
+                
+                      lines.forEach(line => {
+                        const length = line.length;
+                        if (line.trim()) { // Hanya memproses baris yang tidak kosong
+                          result += `${line} (${length})\n`;
+                        }
+                      });
+                
+                      output.value = result.trim(); // Mengisi textarea output dengan hasil
+                    });
+                  </script>
+            </div>
+            <div id="menu2" class="tab-content">Konten untuk Menu 2</div>
+            <div id="menu3" class="tab-content">Konten untuk Menu 3</div>
+
+            <!-- menu 4 tab NPWP  -->
+            <div id="menu4" class="tab-content">
+                <h3>NPWP convert</h3>
+                <div>Contoh</div>
+                <div class="label-npwp">
+                    Inputan :
+                </div>
+                <div class="value-npwp">
+                    012345678912345 <br>
+                    012345678912345 <br>
+                    012345678912345
+                </div>
+                <div class="label-npwp">
+                    Output :
+                </div>
+
+                <div class="value-npwp">
+                    01.234.567.8-912.345 <br>
+                    01.234.567.8-912.345 <br>
+                    01.234.567.8-912.345
+                </div>
+                <div>
+                    <b>Inputan ini cuma akan diconvert format npwp jika 15 digit</b>
+                </div>
+                <h3>Konversi Format Inputan</h3>
+                <label for="inputArray">Masukkan Inputan Array:</label>
+                <textarea class="npwp_textarea" id="inputArray" placeholder="Masukkan data 012345678912345"></textarea>
+
+                <button id="convertButton">Convert</button>
+
+                <h5>Hasil:</h5>
+                <textarea class="npwp_textarea" id="outputArray" readonly></textarea>
+
+                <script>
+                    document.getElementById('convertButton').addEventListener('click', function () {
+                        const input = document.getElementById('inputArray').value;
+                        const lines = input.split('\n').map(line => line.trim());
+                        const formattedLines = lines.map(line => {
+                            if (line.length === 15) {
+                                return `${line.slice(0, 2)}.${line.slice(2, 5)}.${line.slice(5, 8)}.${line[8]}-${line.slice(9, 12)}.${line.slice(12)}`;
+                            }
+                            return line; // Jika panjang tidak sesuai, biarkan apa adanya
+                        });
+                        document.getElementById('outputArray').value = formattedLines.join('\n');
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                // Hapus kelas aktif dari semua tombol dan konten
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+                // Tambahkan kelas aktif ke tombol yang diklik dan konten terkait
+                button.classList.add('active');
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+    </script>
+</body>
+
+</html>
